@@ -1,9 +1,9 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { render } from 'react-snapshot'
 import { HashRouter as Router } from 'react-router-dom'
 import './global.css'
 import App from './pages'
 import registerServiceWorker from './registerServiceWorker'
 
-ReactDOM.render(<Router><App /></Router>, document.getElementById('root'))
+render(<Router><App /></Router>, document.getElementById('root'))
 registerServiceWorker()

@@ -14,10 +14,12 @@ import Home from './home'
 
 import { VOTE_TYPE, SENATORS_KEY, CHANGED_KEY, SHEET_ID } from '../constants'
 
-let store = localStorage
-if (typeof store === "undefined" || store === null) {
+let store
+if (typeof localStorage === "undefined" || localStorage === null) {
   const LocalStorage = import('node-localstorage').LocalStorage
   store = new LocalStorage('./scratch');
+} else {
+  store = localStorage
 }
 
 const processVotes = (data) => data.reduce((votes, p) => {
