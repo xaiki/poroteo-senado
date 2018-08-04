@@ -12,6 +12,8 @@ import Footer from '../components/footer'
 import Senators from './senators'
 import Home from './home'
 
+import HyperCore from '../hypercore'
+
 import { VOTE_TYPE, SENATORS_KEY, CHANGED_KEY, SHEET_ID } from '../constants'
 
 let store = localStorage
@@ -89,7 +91,6 @@ const arrayEqual = (a, b) => {
 export default class extends React.Component {
   constructor (props) {
     super(props)
-
     this.previous = JSON.parse(store.getItem(SENATORS_KEY) || '[]')
     this.allChanges = JSON.parse(store.getItem(CHANGED_KEY) || '[]')
 
@@ -100,6 +101,20 @@ export default class extends React.Component {
       loading: true,
       broadcasts: []
     })
+    
+    HyperCore()
+      .then(feed => {
+        this.feed = feed
+        feed.on('sync', () =>
+          feed.head((err, data) => {
+            if (err) return null
+            console.log('hola data', data.toString())
+
+            this.setState(state => ({
+              broadcasts: [...state.broadcasts, data.toString()]
+            }))
+          }))
+      })
 
     this.update()
   }
@@ -134,10 +149,13 @@ export default class extends React.Component {
   }
 
   render () {
-    const { votos = [], senators = [], changed = [], fecha, loading} = this.state
+    const { votos = [], senators = [], changed = [], fecha, loading, broadcasts} = this.state
     return (
       <div className='container'>
         { loading && <p>Cargando...</p>}
+        { (broadcasts && broadcasts.length)
+          && <span>ultimas noticias: {broadcasts.slice(-1)}</span>}
+
         <Header />
         <Switch>
           <Route path={`/${SENATORS_KEY}/by-vote/:vote`} render={props => (

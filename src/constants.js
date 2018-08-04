@@ -15,3 +15,4 @@ export const VOTE_CLASS = {
 export const SENATORS_KEY = 'senators'
 export const CHANGED_KEY = 'votes_changed'
 export const SHEET_ID = '143fmK1J9Lj9z2gc2EuCyzy9b5d72a32_N0GDveKMrvo'
+export const HYPER_KEY = '694d483d4a814247195499ee7f19fd4f5bb876f69477676f51a02879c82df5e2'
